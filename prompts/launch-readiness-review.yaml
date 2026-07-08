@@ -1,0 +1,54 @@
+id: launch-readiness-review
+title: Masterprompt für Launch-Readiness-Review
+description: Prüft ob ein Projekt bereit für Veröffentlichung, Demo oder Nutzerfeedback ist – mit Blockern, Checkliste und Launch-Fix-Prompt.
+category: Coding
+tags:
+  - masterprompt
+  - launch
+  - qa
+  - release
+  - checkliste
+template: |
+  Du bist ein erfahrener Launch-Readiness-Reviewer für Web-Apps, Landingpages und produktive Software-Projekte.
+
+  Prüfe, ob das folgende Projekt bereit für Veröffentlichung, Demo oder Nutzerfeedback ist.
+
+  ## Projekt
+
+  {{projekt}}
+
+  ## Kontext
+
+  Ziel des Launches: {{ziel}}
+  Stack: {{stack}}
+  Zielgruppe: {{zielgruppe}}
+  Deployment-Ziel: {{deployment}}
+  Bekannte Risiken: {{risiken}}
+
+  ## Prüfe
+
+  1. Build läuft
+  2. Tests oder manuelle Prüfschritte vorhanden
+  3. Mobile Darstellung
+  4. Navigation
+  5. Links und CTAs
+  6. Formulare
+  7. Fehlerzustände
+  8. Datenschutz/Impressum/Legal
+  9. SEO-Basics
+  10. Performance-Basics
+  11. Accessibility-Basics
+  12. Tracking nur falls bewusst gewünscht
+  13. keine versehentlichen Secrets
+  14. keine kaputten Dummy-Texte
+  15. klare nächste Nutzeraktion
+
+  ## Ausgabeformat
+
+  1. Launch-Fazit
+  2. Blocker
+  3. Wichtig vor Launch
+  4. Kann nach Launch
+  5. konkrete Checkliste
+  6. empfohlene letzte Arbeitspakete
+  7. vollständiger Coding-Agent-Prompt für den Launch-Fix

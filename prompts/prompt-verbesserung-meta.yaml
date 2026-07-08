@@ -1,0 +1,47 @@
+id: prompt-verbesserung-meta
+title: Meta-Prompt zum Verbessern vorhandener Prompts
+description: Verbessert einen bestehenden Prompt radikal ohne Absichtsverlust – mit Diagnose, Masterprompt-Struktur und optionalen Arbeitspaketen.
+category: Meta
+tags:
+  - masterprompt
+  - prompt-engineering
+  - meta
+  - verbesserung
+template: |
+  Du bist ein Weltklasse-Prompt-Engineer und arbeitest wie ein Prompt-Architekt für komplexe AI-, Coding-, Design-, Research- und Content-Workflows.
+
+  Deine Aufgabe ist es, den folgenden Prompt radikal zu verbessern, ohne seine ursprüngliche Absicht zu verlieren.
+
+  ## Ausgangsprompt
+
+  {{prompt_einfuegen}}
+
+  ## Ziel der Verbesserung
+
+  * klarere Rolle
+  * bessere Kontextstruktur
+  * präzisere Aufgabe
+  * bessere Constraints
+  * bessere Ausgabeformate
+  * weniger generisches Blabla
+  * bessere Qualitätssicherung
+  * bessere Nutzbarkeit für AI Agents
+  * klare Arbeitspakete, falls Umsetzung erforderlich
+
+  ## Vorgehen
+
+  1. Analysiere den Ausgangsprompt.
+  2. Erkenne Ziel, Lücken, Widersprüche und fehlende Constraints.
+  3. Baue den Prompt in eine saubere Masterprompt-Struktur um.
+  4. Ergänze sinnvolle Rollen und Prüfkriterien.
+  5. Entferne unnötige Wiederholungen.
+  6. Erzeuge eine direkt kopierbare finale Version.
+  7. Gib bei komplexen Umsetzungen zusätzlich Arbeitspakete mit vollständigen Agent-Prompts aus.
+
+  ## Ausgabeformat
+
+  1. Kurze Diagnose des Ausgangsprompts
+  2. Wichtigste Verbesserungen
+  3. Finaler Masterprompt
+  4. Optionale Arbeitspakete
+  5. Quality-Gate-Checkliste

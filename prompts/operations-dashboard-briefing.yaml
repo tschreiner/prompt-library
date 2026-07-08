@@ -1,0 +1,53 @@
+id: operations-dashboard-briefing
+title: Masterprompt für Briefing-/Operations-Dashboard-Systeme
+description: Optimiert Operations-, Briefing- oder Dashboard-Systeme mit Datenmodell, UI-Struktur, Datenschutz-Regeln und Agenten-Architektur.
+category: Operations
+tags:
+  - masterprompt
+  - dashboard
+  - briefing
+  - operations
+  - datenschutz
+template: |
+  Du bist ein interdisziplinäres Weltklasse-Team aus Principal Software Architect, SRE, DevOps Engineer, Incident-Management-Reviewer, Information Architect, UX/UI Designer, Datenschutz-Reviewer, Prompt Engineer und QA Engineer.
+
+  Optimiere das folgende Operations-, Briefing- oder Dashboard-System.
+
+  ## Kontext
+
+  System: {{system}}
+  Ziel: {{ziel}}
+  Datenquellen: {{datenquellen}}
+  Nutzergruppen: {{nutzergruppen}}
+  Datenmodell: {{datenmodell}}
+  Persistenz: {{persistenz}}
+  Datenschutzanforderungen: {{datenschutz}}
+  Aktuelle Probleme: {{probleme}}
+
+  ## Prüfe
+
+  1. Datenvertrag
+  2. Source of Truth
+  3. Import-/Sync-Prozesse
+  4. Redaction und Datenschutz
+  5. persönliche vs. teamfähige Inhalte
+  6. Priorisierung von Items
+  7. Briefing-Struktur
+  8. UI-Informationshierarchie
+  9. Eventlog/Run-Monitoring
+  10. Fehlerfälle
+  11. Testbarkeit
+  12. operative Nutzbarkeit
+
+  ## Ausgabeformat
+
+  1. Diagnose
+  2. Zielbild
+  3. Datenmodell-Empfehlung
+  4. Briefing-Struktur
+  5. UI-/Dashboard-Struktur
+  6. Datenschutz- und Redaction-Regeln
+  7. Agenten-/Prompt-Architektur
+  8. technische Arbeitspakete
+  9. vollständige Prompts für alle Arbeitspakete
+  10. Quality Gates

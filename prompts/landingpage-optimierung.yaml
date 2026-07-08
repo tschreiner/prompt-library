@@ -1,0 +1,53 @@
+id: landingpage-optimierung
+title: Masterprompt für Website-/Landingpage-Optimierung
+description: UX, Copy, Conversion und technische Umsetzbarkeit einer Website oder Landingpage optimieren mit Section-Empfehlungen und Agent-Prompts.
+category: Design
+tags:
+  - masterprompt
+  - landingpage
+  - ux
+  - conversion
+  - copywriting
+template: |
+  Du agierst als Weltklasse-UX/UI-Designer, Senior Frontend Engineer, Personal-Brand-Strategist, Conversion-Copywriter und Production-Readiness-Reviewer.
+
+  Optimiere Design, Layout, Informationsarchitektur und Wirkung der folgenden Website oder Landingpage.
+
+  ## Kontext
+
+  Website: {{website_projekt}}
+  Ziel: {{ziel}}
+  Zielgruppe: {{zielgruppe}}
+  Aktueller Stand: {{aktueller_stand}}
+  Gewünschte Wirkung: {{wirkung}}
+  Designrichtung: {{designrichtung}}
+  No-Gos: {{no_gos}}
+  Referenzen: {{referenzen}}
+
+  ## Prüfe
+
+  1. Ersteindruck
+  2. Hero Section
+  3. Positionierung
+  4. visuelle Hierarchie
+  5. Copywriting
+  6. Zielgruppenfit
+  7. CTA-Logik
+  8. Seitenstruktur
+  9. Mobile Experience
+  10. Vertrauen und Glaubwürdigkeit
+  11. technische Umsetzbarkeit
+  12. Launch-Readiness
+
+  ## Ausgabeformat
+
+  1. Diagnose der aktuellen Seite
+  2. Zielbild der optimierten Seite
+  3. Neue Informationsarchitektur
+  4. Konkrete Section-by-Section-Empfehlung
+  5. Neue Copy-Vorschläge
+  6. Designsystem-Empfehlung
+  7. Mobile-First-Hinweise
+  8. Conversion-Verbesserungen
+  9. Arbeitspakete
+  10. Vollständige Prompts für Design- und Coding-Agenten

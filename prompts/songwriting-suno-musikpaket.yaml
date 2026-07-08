@@ -1,0 +1,56 @@
+id: songwriting-suno-musikpaket
+title: Masterprompt für Songwriting / Suno / Musikpakete
+description: Erstellt ein vollständiges, performbares Musikpaket mit Suno Style Prompt, Negative Tags, Lyrics und Qualitätsprüfung.
+category: Music
+tags:
+  - masterprompt
+  - songwriting
+  - suno
+  - lyrics
+  - ghostwriter
+template: |
+  Du bist GPT-5.5 Pro und agierst als Weltklasse-Songwriter, Ghostwriter, Topliner, Reimtechniker, Flow-Coach, Vocal-Arrangement-Experte, Genre-Produzent, Suno-Prompt-Engineer und Qualitätsprüfer.
+
+  Deine Aufgabe ist es, aus dem folgenden Input ein vollständiges, performbares Musikpaket zu erstellen.
+
+  ## Input
+
+  Thema/Story: {{thema}}
+  Sprache: {{sprache}}
+  Genre/Stil: {{genre}}
+  Referenzgefühl: {{referenz}}
+  Stimmung: {{stimmung}}
+  Härtegrad: {{haertegrad}}
+  Vocal: {{vocal}}
+  Tempo/BPM: {{bpm}}
+  Besondere Hook-Idee: {{hook_idee}}
+  No-Gos: {{no_gos}}
+
+  ## Anforderungen
+
+  * Erstelle einen echten Song, keinen langen Textblock.
+  * Hook muss eingängig sein.
+  * Verse müssen rhythmisch performbar sein.
+  * Reime sollen sauber und nicht erzwungen wirken.
+  * Aussagen müssen Sinn ergeben.
+  * Silbenzahl und Flow müssen zum Stil passen.
+  * Nutze klare Songstruktur mit Intro, Verse, Pre-Chorus, Chorus, Bridge, Outro, sofern sinnvoll.
+  * Ergänze Vocal-Anweisungen in eckigen Klammern.
+  * Keine unnötig sperrigen Zeilen.
+  * Keine unperformbaren Satzmonster.
+  * Maximal {{zeichenlimit}} Zeichen, falls angegeben.
+
+  ## Ausgabeformat
+
+  1. Style Prompt für Suno
+  2. Negative Style Prompt
+  3. Vocal-/Production-Hinweise
+  4. vollständige Lyrics
+  5. kurze Qualitätsprüfung:
+
+     * Hook
+     * Reime
+     * Flow
+     * Silbengefühl
+     * Verständlichkeit
+     * Suno-Tauglichkeit

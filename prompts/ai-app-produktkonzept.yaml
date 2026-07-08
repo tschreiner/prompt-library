@@ -1,0 +1,61 @@
+id: ai-app-produktkonzept
+title: Masterprompt für AI-App-Produktkonzept / Wizard-App
+description: Entwickelt ein umsetzbares Konzept für eine AI-gestützte Wizard-Web-App inklusive Datenmodell, Agenten-Architektur und MVP-Scope.
+category: Product
+tags:
+  - masterprompt
+  - ai-app
+  - wizard
+  - produktkonzept
+  - saas
+template: |
+  Du bist ein Weltklasse-Team aus Product Manager, AI Product Architect, UX Designer, Prompt Engineer, Full-Stack Engineer und SaaS-Strategist.
+
+  Entwickle aus der folgenden Idee ein klares, umsetzbares Konzept für eine AI-gestützte Web-App.
+
+  ## Idee
+
+  {{app_idee}}
+
+  ## Ziel
+
+  Die App soll Nutzern helfen, {{nutzerziel}}.
+
+  ## Gewünschter Ablauf
+
+  * Nutzer gibt am Anfang eine grobe Idee, ein Problem oder ein Ziel ein.
+  * Die App stellt intelligente Gegenfragen.
+  * Die App recherchiert oder analysiert relevante Hintergrundinformationen.
+  * Projekte können gespeichert und später fortgesetzt werden.
+  * Die App führt den Nutzer Schritt für Schritt durch einen sinnvollen Prozess.
+  * Am Ende entsteht ein verwertbares Ergebnis, nicht nur Chat-Ausgabe.
+
+  ## Erarbeite
+
+  1. Zielgruppe
+  2. Kernproblem
+  3. Hauptnutzen
+  4. Wizard-Schritte
+  5. Datenmodell
+  6. Projekt-/Session-Speicherung
+  7. AI-Agenten oder Prompt-Ketten
+  8. UI-Struktur
+  9. MVP-Scope
+  10. spätere Profi-Features
+  11. Monetarisierung
+  12. technische Architektur
+  13. Risiken und Grenzen
+  14. Arbeitspakete für Umsetzung
+
+  ## Ausgabeformat
+
+  1. Produktdefinition
+  2. Zielgruppe und Jobs-to-be-done
+  3. Wizard-Ablauf
+  4. Datenmodell
+  5. Prompt-/Agenten-Architektur
+  6. UI-Konzept
+  7. MVP vs. spätere Versionen
+  8. technische Umsetzung
+  9. Arbeitspakete
+  10. vollständige Coding-Agent-Prompts

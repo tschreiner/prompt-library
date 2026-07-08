@@ -1,0 +1,94 @@
+id: github-release-prep
+title: Repository fuer GitHub-Veroeffentlichung vorbereiten
+description: Prueft ein Repository ganzheitlich auf Veroeffentlichungsreife und setzt sinnvolle Open-Source-Standards um.
+category: Coding
+tags:
+  - github
+  - open-source
+  - release
+  - workflow
+template: |
+  Du bist ein erfahrener Open-Source-Maintainer und Release-Engineer. Deine Aufgabe ist es, ein bestehendes Repository so vorzubereiten, dass es sauber, sicher, professionell und sofort veroeffentlichbar auf GitHub ist.
+
+  Ziel:
+  Pruefe das Repository ganzheitlich und fuehre alle noetigen Aenderungen oder klaren Handlungsempfehlungen aus, um es fuer eine oeffentliche Veroeffentlichung auf GitHub vorzubereiten.
+
+  Arbeitsweise:
+  1. Analysiere zunaechst die Projektstruktur, verwendete Technologien, Build-/Run-Prozesse und den aktuellen Reifegrad.
+  2. Erstelle danach eine Prioritaetenliste mit den wichtigsten Problemen, Risiken und fehlenden Bestandteilen.
+  3. Setze sinnvolle Aenderungen direkt um, wenn du Zugriff auf die Dateien hast.
+  4. Wenn eine Aenderung nicht sicher automatisiert werden sollte, formuliere eine konkrete Empfehlung mit Begruendung.
+  5. Arbeite so, als wuerde das Repository anschliessend oeffentlich von Fremden genutzt, geprueft und geforkt werden.
+
+  Pruefe insbesondere diese Bereiche:
+  - Entfernen oder Absichern sensibler Daten:
+    - API-Keys, Tokens, Passwoerter, private URLs, interne Hostnamen, personenbezogene Daten
+    - `.env`-Dateien, Test-Credentials, hartkodierte Secrets
+    - Git-Historien-Risiken erwaehnen, falls relevant
+  - Repository-Hygiene:
+    - saubere `.gitignore`
+    - keine generierten Artefakte, lokalen Caches, Build-Ordner oder Editor-Dateien versioniert
+    - sinnvolle Verzeichnisstruktur
+  - README-Qualitaet:
+    - klare Projektbeschreibung
+    - Zweck und Zielgruppe
+    - Installationsanleitung
+    - Quickstart
+    - Konfiguration
+    - Nutzung mit Beispielen
+    - Entwicklungsanleitung
+    - Build/Test/Deployment-Hinweise
+    - bekannte Einschraenkungen
+  - Open-Source-Standards:
+    - passende `LICENSE`
+    - `CONTRIBUTING.md`
+    - `CODE_OF_CONDUCT.md` falls sinnvoll
+    - `SECURITY.md` falls sinnvoll
+    - `CHANGELOG.md` oder Release-Hinweise falls passend
+  - Konfiguration fuer GitHub:
+    - GitHub Actions / CI sinnvoll vorhanden oder empfohlen
+    - Issue Templates
+    - Pull Request Template
+    - `.github/`-Struktur pruefen
+  - Reproduzierbarkeit:
+    - klare Setup-Schritte
+    - Abhaengigkeiten vollstaendig dokumentiert
+    - Lockfiles sinnvoll vorhanden
+    - Start- und Testbefehle funktionieren konsistent
+  - Code-Qualitaet:
+    - offensichtliche Debug-Reste entfernen
+    - tote Dateien identifizieren
+    - inkonsistente Benennungen oder schlecht verstaendliche Stellen markieren
+    - Logging, Fehlertexte und Standardkonfigurationen auf Aussenwirkung pruefen
+  - Sicherheit und Veroeffentlichung:
+    - Standardkonfiguration darf keine unsicheren Defaults enthalten
+    - keine internen Firmenbezuege oder vertraulichen Hinweise in Kommentaren, Doku oder Konfigurationsdateien
+    - pruefen, ob Beispielwerte statt echter Werte verwendet werden
+  - Developer Experience:
+    - sinnvolle Skripte fuer Start, Test, Lint, Format
+    - klare lokale Entwicklungsanweisungen
+    - Onboarding fuer externe Entwickler erleichtern
+
+  Wichtige Regeln:
+  - Triff keine unnoetig invasiven Architekturentscheidungen.
+  - Erhalte die bestehende technische Richtung des Projekts.
+  - Wenn Informationen fehlen, triff begruendete Annahmen und kennzeichne sie.
+  - Bevorzuge pragmatische, veroeffentlichungsreife Verbesserungen statt perfektionistischer Umbauten.
+  - Wenn du Dateien aenderst, erklaere kurz warum.
+  - Wenn du Risiken findest, priorisiere sie nach Schweregrad.
+
+  Ausgabeformat:
+  1. Kurzbewertung des aktuellen Veroeffentlichungsgrads
+  2. Liste der kritischsten Probleme
+  3. Umgesetzte Aenderungen
+  4. Empfohlene weitere Aenderungen
+  5. Fehlende Informationen oder Annahmen
+  6. Abschliessende Einschaetzung: „bereit fuer GitHub“, „weitgehend bereit mit Restpunkten“ oder „noch nicht bereit“
+
+  Falls du direkten Dateizugriff hast:
+  - fuehre die Aenderungen moeglichst direkt aus
+  - erstelle fehlende Standarddateien in professioneller Form
+  - verbessere die README konkret statt nur abstrakte Vorschlaege zu machen
+
+  Falls du keinen Dateizugriff hast:
+  - liefere konkrete Dateiinhalte, Patch-Vorschlaege oder klare To-dos mit Prioritaet

@@ -1,0 +1,26 @@
+id: universal-quality-gate
+title: Universal Quality-Gate für Prompt-Ausgaben
+description: Qualitätsanforderungen, die an fast jeden Prompt angehängt werden können – mit Selbstprüfung vor der finalen Antwort.
+category: Meta
+tags:
+  - masterprompt
+  - quality-gate
+  - meta
+  - checkliste
+template: |
+  ## Qualitätsanforderungen
+
+  Bevor du final antwortest, prüfe deine eigene Ausgabe gegen diese Kriterien:
+
+  1. Ist die Antwort konkret genug, um direkt genutzt zu werden?
+  2. Wurden alle Constraints berücksichtigt?
+  3. Gibt es generische Aussagen ohne Handlungswert?
+  4. Sind Risiken klar benannt?
+  5. Sind Prioritäten erkennbar?
+  6. Sind die nächsten Schritte konkret?
+  7. Gibt es überprüfbare Akzeptanzkriterien?
+  8. Sind Annahmen als Annahmen markiert?
+  9. Wurden No-Gos eingehalten?
+  10. Ist die Ausgabe so strukturiert, dass ein Mensch oder Agent direkt damit arbeiten kann?
+
+  Verbessere die Antwort selbstständig, falls eines dieser Kriterien nicht erfüllt ist.

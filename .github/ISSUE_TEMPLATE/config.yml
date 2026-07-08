@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Private security disclosure
+    url: mailto:info@teddschreiner.de
+    about: Please report suspected vulnerabilities privately instead of opening a public issue.
