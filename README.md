@@ -105,7 +105,7 @@ Beim Validieren und Rendern gilt:
 
 Die aktuelle Version benoetigt keine Pflicht-Environment-Variablen. `.env.example` ist nur ein Platzhalter fuer spaetere Erweiterungen und enthaelt bewusst keine echten Werte.
 
-Falls die App unter einem Repository-Subpfad deployed wird, muss `base` in [vite.config.ts](/C:/Users/Admin/Documents/prompt-library/vite.config.ts) passend gesetzt werden.
+Falls die App unter einem Repository-Subpfad deployed wird, setze `VITE_BASE_PATH` beim Build, z. B. `VITE_BASE_PATH=/prompt-library/ npm run build`. Die Konfiguration liegt in [vite.config.ts](/vite.config.ts).
 
 ## Tests und Build
 
@@ -122,6 +122,28 @@ Geeignet fuer statische Hosts wie GitHub Pages, Netlify oder Vercel.
 
 - Build Command: `npm run build`
 - Publish Directory: `dist`
+
+### GitHub Pages
+
+Die App wird automatisch per GitHub Actions veroeffentlicht:
+
+- Workflow: [.github/workflows/deploy-pages.yml](/.github/workflows/deploy-pages.yml)
+- Live-URL: [https://tschreiner.github.io/prompt-library/](https://tschreiner.github.io/prompt-library/)
+- Trigger: Push auf `main` oder manuell ueber `workflow_dispatch`
+
+Einmalige Repository-Einstellung in GitHub:
+
+1. `Settings` -> `Pages`
+2. `Build and deployment` -> `Source`: `GitHub Actions`
+
+Lokaler Produktions-Check mit dem gleichen Subpfad wie auf GitHub Pages:
+
+```bash
+VITE_BASE_PATH=/prompt-library/ npm run build
+npm run preview
+```
+
+Fuer andere Subpfade oder Root-Deployments kann `VITE_BASE_PATH` entsprechend gesetzt werden. Ohne Variable bleibt `base` auf `/`.
 
 ## Sicherheit
 
