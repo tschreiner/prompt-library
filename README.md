@@ -4,6 +4,8 @@ Prompt Hub ist eine static-first Web-App zum Pflegen, Durchsuchen und Ausfuellen
 
 Das Projekt ist fuer Teams und Einzelpersonen gedacht, die eine kleine, nachvollziehbare Prompt-Bibliothek ohne Backend betreiben wollen.
 
+Repository: [tschreiner/prompt-library](https://github.com/tschreiner/prompt-library)
+
 ## Status
 
 - Oeffentlich veroeffentlichbar als statische App

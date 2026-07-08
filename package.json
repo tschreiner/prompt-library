@@ -5,6 +5,14 @@
   "description": "Static-first prompt library built with React, TypeScript, and YAML-based prompt templates.",
   "license": "MIT",
   "author": "Tedd Schreiner <info@teddschreiner.de>",
+  "homepage": "https://github.com/tschreiner/prompt-library",
+  "bugs": {
+    "url": "https://github.com/tschreiner/prompt-library/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tschreiner/prompt-library.git"
+  },
   "keywords": [
     "prompts",
     "prompt-library",
