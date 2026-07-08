@@ -13,8 +13,11 @@ import {
   Music2,
   Package,
   Palette,
+  Search,
+  SlidersHorizontal,
   Sparkles,
   Workflow,
+  X,
 } from 'lucide-react';
 import { type ReactNode, useEffect, useMemo, useState } from 'react';
 import { loadTemplates } from './data/templateStore';
@@ -34,8 +37,15 @@ const variableLabels: Record<string, string> = {
   task: 'Aufgabe',
 };
 
+const defaultVisibleTagCount = 12;
+const promptCardTagCount = 3;
+
 function unique(values: string[]) {
   return [...new Set(values)].sort((a, b) => a.localeCompare(b, 'de'));
+}
+
+function normalizeForSearch(value: string) {
+  return value.toLocaleLowerCase('de');
 }
 
 function iconForCategory(category: string) {
@@ -58,27 +68,91 @@ function variablePlaceholder(name: string) {
   return `${label} hier einfuegen. Die Eingabe bleibt nur in dieser Browser-Sitzung.`;
 }
 
+function templateMatchesSearch(template: PromptTemplate, searchQuery: string) {
+  if (!searchQuery.trim()) return true;
+
+  const haystack = normalizeForSearch(
+    [
+      template.title,
+      template.description,
+      template.category,
+      template.tags.join(' '),
+      template.variables.join(' '),
+      template.template,
+    ].join(' '),
+  );
+
+  return haystack.includes(normalizeForSearch(searchQuery.trim()));
+}
+
+function mergeLimitedOptions(options: string[], selectedOptions: string[], limit: number) {
+  const limited = options.slice(0, limit);
+  const activeOutsideLimit = selectedOptions.filter((option) => !limited.includes(option));
+  return unique([...limited, ...activeOutsideLimit]);
+}
+
 export function App() {
   const [templates] = useState<PromptTemplate[]>(() => loadTemplates());
   const [sort, setSort] = useState<PromptSort>('title');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showAllTags, setShowAllTags] = useState(false);
   const [selectedId, setSelectedId] = useState(templates[0]?.id ?? '');
   const [page, setPage] = useState<'library' | 'category' | 'detail'>('library');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [activeTags, setActiveTags] = useState<string[]>([]);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [valuesByTemplate, setValuesByTemplate] = useState<Record<string, Record<string, string>>>(
     {},
   );
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
 
+  const allCategories = useMemo(() => unique(templates.map((item) => item.category)), [templates]);
+
+  const searchableTemplates = useMemo(
+    () => templates.filter((template) => templateMatchesSearch(template, searchQuery)),
+    [searchQuery, templates],
+  );
+
+  const categoryCounts = useMemo(
+    () =>
+      Object.fromEntries(
+        allCategories.map((category) => [
+          category,
+          searchableTemplates.filter((item) => item.category === category).length,
+        ]),
+      ),
+    [allCategories, searchableTemplates],
+  );
+
+  const tagCounts = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const template of searchableTemplates) {
+      for (const tag of template.tags) {
+        counts.set(tag, (counts.get(tag) ?? 0) + 1);
+      }
+    }
+    return counts;
+  }, [searchableTemplates]);
+
+  const allTags = useMemo(
+    () =>
+      unique(templates.flatMap((item) => item.tags)).sort((left, right) => {
+        const countDiff = (tagCounts.get(right) ?? 0) - (tagCounts.get(left) ?? 0);
+        return countDiff || left.localeCompare(right, 'de');
+      }),
+    [tagCounts, templates],
+  );
+
   const visibleTemplates = useMemo(() => {
-    const filtered = templates.filter((template) => {
+    const filtered = searchableTemplates.filter((template) => {
       const matchesCategory = !selectedCategory || template.category === selectedCategory;
       const matchesTags =
         !activeTags.length || activeTags.every((tag) => template.tags.includes(tag));
       return matchesCategory && matchesTags;
     });
+
     return sortPromptTemplates(filtered, sort);
-  }, [activeTags, selectedCategory, sort, templates]);
+  }, [activeTags, searchableTemplates, selectedCategory, sort]);
 
   useEffect(() => {
     if (!visibleTemplates.length) {
@@ -93,22 +167,41 @@ export function App() {
   const selected = templates.find((item) => item.id === selectedId) ?? visibleTemplates[0];
   const selectedValues = selected ? (valuesByTemplate[selected.id] ?? {}) : {};
   const generatedPrompt = selected ? renderTemplate(selected.template, selectedValues) : '';
+  const visibleRailTags = showAllTags
+    ? allTags
+    : mergeLimitedOptions(allTags, activeTags, defaultVisibleTagCount);
+  const hasActiveFilters = Boolean(selectedCategory || activeTags.length || searchQuery.trim());
+
+  function closeMobileFilters() {
+    setMobileFiltersOpen(false);
+  }
 
   function openTemplate(templateId: string) {
     setSelectedId(templateId);
     setPage('detail');
+    closeMobileFilters();
   }
 
   function openLibrary() {
     setSelectedCategory(null);
     setActiveTags([]);
     setPage('library');
+    closeMobileFilters();
   }
 
   function openCategory(category: string) {
     setSelectedCategory(category);
     setActiveTags([]);
     setPage('category');
+    closeMobileFilters();
+  }
+
+  function resetAllFilters() {
+    setSelectedCategory(null);
+    setActiveTags([]);
+    setSearchQuery('');
+    setPage('library');
+    closeMobileFilters();
   }
 
   function updateVariable(name: string, value: string) {
@@ -130,8 +223,6 @@ export function App() {
     }
   }
 
-  const categories = unique(templates.map((item) => item.category));
-  const tags = unique(templates.flatMap((item) => item.tags));
   const pageTitle = page === 'category' && selectedCategory ? selectedCategory : 'Prompt-Bestand';
   const pageDescription =
     page === 'category' && selectedCategory
@@ -142,19 +233,40 @@ export function App() {
     setActiveTags((current) =>
       current.includes(tag) ? current.filter((item) => item !== tag) : [...current, tag],
     );
+    closeMobileFilters();
   }
 
   return (
-    <div className="app-shell library-layout">
-      <aside className="rail" aria-label="Navigation">
-        <div className="brand">
-          <div className="brand-mark">
-            <Library aria-hidden="true" />
+    <div className={`app-shell library-layout${mobileFiltersOpen ? ' filters-open' : ''}`}>
+      {mobileFiltersOpen ? (
+        <button
+          aria-label="Filter schliessen"
+          className="rail-backdrop"
+          type="button"
+          onClick={closeMobileFilters}
+        />
+      ) : null}
+
+      <aside className={`rail${mobileFiltersOpen ? ' open' : ''}`} aria-label="Navigation">
+        <div className="rail-head">
+          <div className="brand">
+            <div className="brand-mark">
+              <Library aria-hidden="true" />
+            </div>
+            <div>
+              <h1>Prompt Hub</h1>
+              <p className="tiny">Static-first</p>
+            </div>
           </div>
-          <div>
-            <h1>Prompt Hub</h1>
-            <p className="tiny">Static-first</p>
-          </div>
+
+          <button
+            aria-label="Filter schliessen"
+            className="icon-button mobile-only"
+            type="button"
+            onClick={closeMobileFilters}
+          >
+            <X aria-hidden="true" />
+          </button>
         </div>
 
         <section className="rail-section">
@@ -169,19 +281,28 @@ export function App() {
                 <Library aria-hidden="true" />
                 Alle Prompts
               </span>
-              <span className="count">{templates.length}</span>
+              <span className="count">{searchableTemplates.length}</span>
             </button>
           </div>
         </section>
 
         <section className="rail-section">
-          <p className="rail-title">Kategorien</p>
+          <div className="rail-section-head">
+            <p className="rail-title">Kategorien</p>
+            {selectedCategory ? (
+              <button className="text-button" type="button" onClick={openLibrary}>
+                Reset
+              </button>
+            ) : null}
+          </div>
+
           <div className="filter-list">
-            {categories.map((category) => (
+            {allCategories.map((category) => (
               <CategoryFilter
                 active={selectedCategory === category}
                 category={category}
-                count={templates.filter((item) => item.category === category).length}
+                count={categoryCounts[category] ?? 0}
+                disabled={!categoryCounts[category] && selectedCategory !== category}
                 key={category}
                 onClick={() => openCategory(category)}
               />
@@ -190,21 +311,37 @@ export function App() {
         </section>
 
         <section className="rail-section">
-          <p className="rail-title">Tags</p>
-          <div className="filter-list">
-            {tags.map((tag) => (
+          <div className="rail-section-head">
+            <p className="rail-title">Tags</p>
+            {allTags.length > defaultVisibleTagCount ? (
               <button
-                key={tag}
-                className={`filter-pill ${activeTags.includes(tag) ? 'active' : ''}`}
+                className="text-button"
                 type="button"
-                onClick={() => toggleTag(tag)}
+                onClick={() => setShowAllTags((current) => !current)}
               >
-                <span>{tag}</span>
-                <span className="count">
-                  {templates.filter((item) => item.tags.includes(tag)).length}
-                </span>
+                {showAllTags ? 'Weniger' : 'Alle'}
               </button>
-            ))}
+            ) : null}
+          </div>
+
+          <div className="filter-list">
+            {visibleRailTags.map((tag) => {
+              const count = tagCounts.get(tag) ?? 0;
+              const active = activeTags.includes(tag);
+
+              return (
+                <button
+                  key={tag}
+                  className={`filter-pill ${active ? 'active' : ''}`}
+                  disabled={!count && !active}
+                  type="button"
+                  onClick={() => toggleTag(tag)}
+                >
+                  <span>{tag}</span>
+                  <span className="count">{count}</span>
+                </button>
+              );
+            })}
           </div>
         </section>
       </aside>
@@ -231,48 +368,67 @@ export function App() {
                     <p className="collection-sub">
                       {selectedCategory
                         ? `Sammlung fuer ${selectedCategory} mit schnellen Vorlagen fuer wiederkehrende Aufgaben.`
-                        : 'Freigegebene Vorlagen fuer wiederkehrende Aufgaben in einer kompakten Arbeitsansicht.'}
+                        : 'Freigegebene Vorlagen fuer wiederkehrende Aufgaben in einer fokussierten Arbeitsansicht.'}
                     </p>
                   </div>
-                  <label className="select-wrap" htmlFor="sortSelect">
-                    <ArrowUpDown aria-hidden="true" />
-                    <select
-                      id="sortSelect"
-                      value={sort}
-                      onChange={(event) => setSort(event.target.value as PromptSort)}
+
+                  <div className="toolbar-actions">
+                    <button
+                      className="secondary-button compact mobile-only"
+                      type="button"
+                      onClick={() => setMobileFiltersOpen(true)}
                     >
-                      <option value="title">Titel A-Z</option>
-                      <option value="category">Nach Kategorie</option>
-                    </select>
-                  </label>
+                      <SlidersHorizontal aria-hidden="true" />
+                      Filter
+                    </button>
+
+                    <label className="select-wrap" htmlFor="sortSelect">
+                      <ArrowUpDown aria-hidden="true" />
+                      <select
+                        id="sortSelect"
+                        value={sort}
+                        onChange={(event) => setSort(event.target.value as PromptSort)}
+                      >
+                        <option value="title">Titel A-Z</option>
+                        <option value="category">Nach Kategorie</option>
+                      </select>
+                    </label>
+                  </div>
                 </div>
 
-                <div className="active-filter-row" aria-label="Aktive Filter">
-                  {selectedCategory ? <Chip color="green">{selectedCategory}</Chip> : null}
-                  {activeTags.map((tag) => (
-                    <Chip color="blue" key={tag}>
-                      {tag}
-                    </Chip>
-                  ))}
-                  {selectedCategory ? (
-                    <button
-                      className="secondary-button compact"
-                      type="button"
-                      onClick={openLibrary}
-                    >
-                      Alle Prompts
-                    </button>
-                  ) : null}
-                  {activeTags.length ? (
-                    <button
-                      className="secondary-button compact"
-                      type="button"
-                      onClick={() => setActiveTags([])}
-                    >
-                      Tags zuruecksetzen
+                <div className="discovery-bar">
+                  <label className="search-field" htmlFor="templateSearch">
+                    <Search aria-hidden="true" />
+                    <input
+                      id="templateSearch"
+                      placeholder="Suche in Titel, Beschreibung, Tags oder Prompt-Inhalt"
+                      type="search"
+                      value={searchQuery}
+                      onChange={(event) => setSearchQuery(event.target.value)}
+                    />
+                  </label>
+
+                  {searchQuery ? (
+                    <button className="secondary-button compact" type="button" onClick={resetAllFilters}>
+                      Suche leeren
                     </button>
                   ) : null}
                 </div>
+
+                {hasActiveFilters ? (
+                  <div className="active-filter-row" aria-label="Aktive Filter">
+                    {searchQuery ? <Chip color="gold">Suche: {searchQuery}</Chip> : null}
+                    {selectedCategory ? <Chip color="green">{selectedCategory}</Chip> : null}
+                    {activeTags.map((tag) => (
+                      <Chip color="blue" key={tag}>
+                        {tag}
+                      </Chip>
+                    ))}
+                    <button className="secondary-button compact" type="button" onClick={resetAllFilters}>
+                      Alle Filter loeschen
+                    </button>
+                  </div>
+                ) : null}
               </section>
 
               <section className="prompt-list" aria-label="Templates">
@@ -286,8 +442,11 @@ export function App() {
                   ))
                 ) : (
                   <div className="empty-state">
-                    <strong>Keine Templates vorhanden</strong>
-                    <p>Fuege ein neues Template hinzu, damit es hier erscheint.</p>
+                    <strong>Keine Templates fuer diese Suche gefunden</strong>
+                    <p>Versuche eine andere Suchanfrage oder setze die aktiven Filter zurueck.</p>
+                    <button className="secondary-button" type="button" onClick={resetAllFilters}>
+                      Filter zuruecksetzen
+                    </button>
                   </div>
                 )}
               </section>
@@ -317,7 +476,20 @@ export function App() {
                 <section className="detail-card detail-hero">
                   <div className="tag-row">
                     <Chip color="green">{selected.category}</Chip>
+                    <Chip color="gold">
+                      {selected.variables.length
+                        ? `${selected.variables.length} Eingaben noetig`
+                        : 'Sofort kopierbar'}
+                    </Chip>
+                    <Chip color="blue">Nur lokale Sitzung</Chip>
                   </div>
+
+                  <p className="detail-summary">
+                    {selected.variables.length
+                      ? 'Fuellen, direkt pruefen und anschliessend als Gesamtprompt kopieren.'
+                      : 'Dieses Template kann direkt uebernommen und ohne weitere Eingaben kopiert werden.'}
+                  </p>
+
                   <div className="detail-meta-grid">
                     {selected.tags.map((tag) => (
                       <Chip color="blue" key={tag}>
@@ -411,6 +583,9 @@ function Chip({
 }
 
 function PromptCard({ template, onSelect }: { template: PromptTemplate; onSelect: () => void }) {
+  const visibleTags = template.tags.slice(0, promptCardTagCount);
+  const hiddenTagCount = Math.max(template.tags.length - visibleTags.length, 0);
+
   return (
     <article className="prompt-card">
       <button className="card-select" type="button" onClick={onSelect}>
@@ -418,17 +593,21 @@ function PromptCard({ template, onSelect }: { template: PromptTemplate; onSelect
           <div>
             <div className="tag-row">
               <Chip color="green">{template.category}</Chip>
+              {template.variables.length ? (
+                <Chip color="gold">{template.variables.length} Felder</Chip>
+              ) : null}
             </div>
             <h3>{template.title}</h3>
           </div>
         </div>
         <p>{template.description}</p>
-        <div className="card-meta-grid">
-          {template.tags.map((tag) => (
+        <div className="card-meta-grid compact-tags">
+          {visibleTags.map((tag) => (
             <Chip color="blue" key={tag}>
               {tag}
             </Chip>
           ))}
+          {hiddenTagCount ? <Chip color="gold">+{hiddenTagCount}</Chip> : null}
         </div>
       </button>
     </article>
@@ -439,17 +618,24 @@ function CategoryFilter({
   active,
   category,
   count,
+  disabled,
   onClick,
 }: {
   active: boolean;
   category: string;
   count: number;
+  disabled: boolean;
   onClick: () => void;
 }) {
   const Icon = iconForCategory(category);
 
   return (
-    <button className={`filter-pill ${active ? 'active' : ''}`} type="button" onClick={onClick}>
+    <button
+      className={`filter-pill ${active ? 'active' : ''}`}
+      disabled={disabled}
+      type="button"
+      onClick={onClick}
+    >
       <span>
         <Icon aria-hidden="true" />
         {category}
